@@ -10,7 +10,7 @@ const StyledContainer = styled.div`
   max-width: 600px;
   margin: 50px auto;
   padding: 20px;
-  border: 1px solid #ddd;
+  border: 1px solid #4c4c4c;
   border-radius: 10px;
 `;
 
@@ -51,6 +51,7 @@ function Interpreter() {
 
   return (
     <StyledContainer>
+      <div className="title">NumberNoodle</div>
       <InputArea value={expression} onChange={handleChange} />
       <OutputArea result={result} ref={resultRef} />
     </StyledContainer>

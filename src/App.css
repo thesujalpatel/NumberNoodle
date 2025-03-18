@@ -1,37 +1,9 @@
-.app {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px;
-}
-
-.code-editor {
-  width: 500px;
-  height: 200px;
-  margin-bottom: 10px;
-  padding: 10px;
-  border: 1px solid #ccc;
+.title {
+  font-size: 25px;
+  color: #4c4c4c;
+  text-align: center;
+  margin-bottom: 20px;
   font-family: monospace;
-  font-size: 16px;
-}
-
-.run-button {
-  padding: 10px 20px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  cursor: pointer;
-}
-
-.output-area {
-  width: 500px;
-  margin-top: 10px;
-  padding: 10px;
-  border: 1px solid #ccc;
-  min-height: 100px;
-}
-
-.output-line {
-  margin-bottom: 5px;
-  font-family: monospace;
+  font-weight: bold;
+  letter-spacing: 1px;
 }
