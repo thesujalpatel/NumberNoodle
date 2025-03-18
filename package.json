@@ -17,9 +17,11 @@
     "styled-components": "^6.1.16",
     "web-vitals": "^2.1.4"
   },
-  "scripts": {
+ "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
+    "build": "react-scripts build && cp build/index.html build/404.html",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
