@@ -39,8 +39,9 @@ function Interpreter() {
   const evaluateExpression = (expr) => {
     try {
       const sanitizedExpr = expr.replace(/[^\d+\-*/().\s]/g, "");
-      const evaluatedResult = new Function(`return ${sanitizedExpr}`)();
-      setResult(evaluatedResult);
+      const result = calculate(sanitizedExpr);
+      setResult(result);
+
       if (resultRef.current) {
         gsap.fromTo(
           resultRef.current,
@@ -50,6 +51,14 @@ function Interpreter() {
       }
     } catch (error) {
       setResult("Error");
+    }
+  };
+
+  const calculate = (expression) => {
+    try{
+      return new Function(`return ${expression}`)();
+    } catch (e){
+      return "Error";
     }
   };
 
