@@ -62,29 +62,30 @@
   };
 
   const lexer = (input) => {
-   const tokenList =;
-   let i = 0;
-   while (i < input.length) {
-    const char = input[i];
-    if (/\d/.test(char)) {
-     let num = "";
-     while (/\d|\./.test(input[i])) {
-      num += input[i];
-      i++;
-     }
-     tokenList.push({ value: num, type: "number", position: i - num.length });
-     continue;
-    } else if (/[+\-*/()]/.test(char)) {
-     tokenList.push({ value: char, type: "operator", position: i });
-    } else if (/\s/.test(char)) {
-     tokenList.push({ value: char, type: "whitespace", position: i });
-    } else {
-     tokenList.push({ value: char, type: "identifier", position: i }); // Or 'invalid'
+    const tokenList = []; // Corrected line
+    let i = 0;
+    while (i < input.length) {
+        const char = input[i];
+        if (/\d/.test(char)) {
+            let num = "";
+            while (/\d|\./.test(input[i])) {
+                num += input[i];
+                i++;
+            }
+            tokenList.push({ value: num, type: "number", position: i - num.length });
+            continue;
+        } else if (/[+\-*/()]/.test(char)) {
+            tokenList.push({ value: char, type: "operator", position: i });
+        } else if (/\s/.test(char)) {
+            tokenList.push({ value: char, type: "whitespace", position: i });
+        } else {
+            tokenList.push({ value: char, type: "identifier", position: i }); // Or 'invalid'
+        }
+        i++;
     }
-    i++;
-   }
-   return tokenList;
-  };
+    return tokenList;
+};
+
 
   const parser = (tokens) => {
    let parenCount = 0;
