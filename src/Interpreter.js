@@ -3,7 +3,6 @@ import styled from "styled-components";
 import InputArea from "./InputArea";
 import OutputArea from "./OutputArea";
 import { gsap } from "gsap";
-import { evaluate } from "mathjs";
 
 const StyledContainer = styled.div`
   max-width: 600px;
@@ -40,7 +39,7 @@ function Interpreter() {
   const evaluateExpression = (expr) => {
     try {
       const sanitizedExpr = expr.replace(/[^\d+\-*/().\s]/g, "");
-      const evaluatedResult = evaluate(sanitizedExpr);
+      const evaluatedResult = new Function(`return ${sanitizedExpr}`)();
       setResult(evaluatedResult);
       if (resultRef.current) {
         gsap.fromTo(
@@ -63,9 +62,8 @@ function Interpreter() {
       } else if (/[+\-*/()]/.test(char)) {
         tokenList.push({ value: char, type: "operator" });
       } else if (/\s/.test(char)) {
-        tokenList.push({value: char, type: "whitespace"})
-      }
-      else {
+        tokenList.push({ value: char, type: "whitespace" });
+      } else {
         tokenList.push({ value: char, type: "identifier" });
       }
     }
