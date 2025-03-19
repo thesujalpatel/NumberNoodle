@@ -4,7 +4,31 @@ import InputArea from "./InputArea";
 import OutputArea from "./OutputArea";
 import { gsap } from "gsap";
 
-// ... (Styled components remain the same)
+const StyledContainer = styled.div`
+  max-width: 600px;
+  margin: 50px auto;
+  padding: 20px;
+  border: 1px solid #4c4c4c;
+  border-radius: 10px;
+`;
+
+const StyledTable = styled.table`
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+`;
+
+const StyledTableHeader = styled.th`
+  border: 1px solid #4c4c4c;
+  padding: 8px;
+  text-align: left;
+`;
+
+const StyledTableCell = styled.td`
+  border: 1px solid #4c4c4c;
+  padding: 8px;
+  text-align: left;
+`;
 
 function Interpreter() {
   const [expression, setExpression] = useState("");
@@ -59,7 +83,6 @@ function Interpreter() {
   };
 
   const buildAST = (tokens) => {
-    // Basic precedence handling (no full shunting-yard)
     const values = [];
     const operators = [];
 
@@ -94,7 +117,7 @@ function Interpreter() {
         while (operators[operators.length - 1] !== "(") {
           applyOp();
         }
-        operators.pop(); // Remove "("
+        operators.pop();
       } else if (/[+\-*/]/.test(token)) {
         while (
           operators.length &&
@@ -113,18 +136,59 @@ function Interpreter() {
   };
 
   const evaluateAST = (ast) => {
-    return ast; // In this simplified case, the AST is the result
+    return ast;
   };
 
-  // ... (lexer and handleChange remain the same)
+  const lexer = (input) => {
+    const tokenList = [];
+    for (let i = 0; i < input.length; i++) {
+      const char = input[i];
+      if (/\d/.test(char)) {
+        tokenList.push({ value: char, type: "number" });
+      } else if (/[+\-*/()]/.test(char)) {
+        tokenList.push({ value: char, type: "operator" });
+      } else if (/\s/.test(char)) {
+        tokenList.push({ value: char, type: "whitespace" });
+      } else {
+        tokenList.push({ value: char, type: "identifier" });
+      }
+    }
+    return tokenList;
+  };
+
+  const handleChange = (e) => {
+    const newExpression = e.target.value;
+    setExpression(newExpression);
+    setTokens(lexer(newExpression));
+  };
 
   useEffect(() => {
     evaluateExpression(expression);
-  }, [expression, evaluateExpression]); // Add evaluateExpression to dependencies
+  }, [expression, evaluateExpression]);
 
   return (
     <StyledContainer>
-      {/* ... (rest of the component) */}
+      <div className="title">NumberNoodle</div>
+      <InputArea value={expression} onChange={handleChange} />
+      <OutputArea result={result} ref={resultRef} />
+      <StyledTable>
+        <thead>
+          <tr>
+            <StyledTableHeader>Token</StyledTableHeader>
+            <StyledTableHeader>Type</StyledTableHeader>
+            <StyledTableHeader>Index</StyledTableHeader>
+          </tr>
+        </thead>
+        <tbody>
+          {tokens.map((token, index) => (
+            <tr key={index}>
+              <StyledTableCell>{token.value}</StyledTableCell>
+              <StyledTableCell>{token.type}</StyledTableCell>
+              <StyledTableCell>{index}</StyledTableCell>
+            </tr>
+          ))}
+        </tbody>
+      </StyledTable>
     </StyledContainer>
   );
 }
