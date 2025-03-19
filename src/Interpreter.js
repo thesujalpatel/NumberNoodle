@@ -3,7 +3,8 @@
  import InputArea from "./InputArea";
  import OutputArea from "./OutputArea";
  import { gsap } from "gsap";
- import { evaluate, parse } from "mathjs";
+ import { parse } from "mathjs";
+
 
  const StyledContainer = styled.div`
   max-width: 600px;
