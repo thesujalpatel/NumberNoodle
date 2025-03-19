@@ -3,6 +3,7 @@ import styled from "styled-components";
 import InputArea from "./InputArea";
 import OutputArea from "./OutputArea";
 import { gsap } from "gsap";
+import { evaluate } from "mathjs";
 
 const StyledContainer = styled.div`
   max-width: 600px;
@@ -39,9 +40,8 @@ function Interpreter() {
   const evaluateExpression = (expr) => {
     try {
       const sanitizedExpr = expr.replace(/[^\d+\-*/().\s]/g, "");
-      const result = parseAndEvaluate(sanitizedExpr);
-      setResult(result);
-
+      const evaluatedResult = evaluate(sanitizedExpr);
+      setResult(evaluatedResult);
       if (resultRef.current) {
         gsap.fromTo(
           resultRef.current,
@@ -54,91 +54,6 @@ function Interpreter() {
     }
   };
 
-  const parseAndEvaluate = (expr) => {
-    const tokens = tokenize(expr);
-    const ast = buildAST(tokens);
-    return evaluateAST(ast);
-  };
-
-  const tokenize = (expr) => {
-    const tokens = [];
-    let number = "";
-    for (let char of expr) {
-      if (/\d|\./.test(char)) {
-        number += char;
-      } else {
-        if (number) {
-          tokens.push(parseFloat(number));
-          number = "";
-        }
-        if (/[+\-*/()]/.test(char)) {
-          tokens.push(char);
-        }
-      }
-    }
-    if (number) {
-      tokens.push(parseFloat(number));
-    }
-    return tokens;
-  };
-
-  const buildAST = (tokens) => {
-    const values = [];
-    const operators = [];
-
-    const applyOp = () => {
-      const op = operators.pop();
-      const b = values.pop();
-      const a = values.pop();
-      switch (op) {
-        case "+":
-          values.push(a + b);
-          break;
-        case "-":
-          values.push(a - b);
-          break;
-        case "*":
-          values.push(a * b);
-          break;
-        case "/":
-          values.push(a / b);
-          break;
-        default:
-          throw new Error("Invalid operator");
-      }
-    };
-
-    for (let token of tokens) {
-      if (typeof token === "number") {
-        values.push(token);
-      } else if (token === "(") {
-        operators.push(token);
-      } else if (token === ")") {
-        while (operators[operators.length - 1] !== "(") {
-          applyOp();
-        }
-        operators.pop();
-      } else if (/[+\-*/]/.test(token)) {
-        while (
-          operators.length &&
-          /[*/]/.test(token) &&
-          /[+\-*/]/.test(operators[operators.length - 1])
-        ) {
-          applyOp();
-        }
-        operators.push(token);
-      }
-    }
-    while (operators.length) {
-      applyOp();
-    }
-    return values[0];
-  };
-
-  const evaluateAST = (ast) => {
-    return ast;
-  };
-
   const lexer = (input) => {
     const tokenList = [];
     for (let i = 0; i < input.length; i++) {
@@ -148,8 +63,9 @@ function Interpreter() {
       } else if (/[+\-*/()]/.test(char)) {
         tokenList.push({ value: char, type: "operator" });
       } else if (/\s/.test(char)) {
-        tokenList.push({ value: char, type: "whitespace" });
-      } else {
+        tokenList.push({value: char, type: "whitespace"})
+      }
+      else {
         tokenList.push({ value: char, type: "identifier" });
       }
     }
@@ -163,8 +79,12 @@ function Interpreter() {
   };
 
   useEffect(() => {
-    evaluateExpression(expression);
-  }, [expression, evaluateExpression]);
+    if (expression.trim() !== "") {
+      evaluateExpression(expression);
+    } else {
+      setResult(null);
+    }
+  }, [expression]);
 
   return (
     <StyledContainer>
