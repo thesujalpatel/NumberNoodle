@@ -54,10 +54,28 @@ function Interpreter() {
     }
   };
 
+  const lexer = (input) => {
+    const tokenList = [];
+    for (let i = 0; i < input.length; i++) {
+      const char = input[i];
+      if (/\d/.test(char)) {
+        tokenList.push({ value: char, type: "num" });
+      } else if (/[+\-*/()]/.test(char)) {
+        tokenList.push({ value: char, type: "operator" });
+      } else if (/\s/.test(char)) {
+        tokenList.push({value: char, type: "whitespace"})
+      }
+      else {
+        tokenList.push({ value: char, type: "id" });
+      }
+    }
+    return tokenList;
+  };
+
   const handleChange = (e) => {
     const newExpression = e.target.value;
     setExpression(newExpression);
-    setTokens(newExpression.split("")); // Tokenize the input
+    setTokens(lexer(newExpression));
   };
 
   useEffect(() => {
@@ -77,13 +95,15 @@ function Interpreter() {
         <thead>
           <tr>
             <StyledTableHeader>Token</StyledTableHeader>
+            <StyledTableHeader>Type</StyledTableHeader>
             <StyledTableHeader>Index</StyledTableHeader>
           </tr>
         </thead>
         <tbody>
           {tokens.map((token, index) => (
             <tr key={index}>
-              <StyledTableCell>{token}</StyledTableCell>
+              <StyledTableCell>{token.value}</StyledTableCell>
+              <StyledTableCell>{token.type}</StyledTableCell>
               <StyledTableCell>{index}</StyledTableCell>
             </tr>
           ))}
