@@ -1,4 +1,3 @@
-// src/Interpreter.js
 import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import InputArea from "./InputArea";
@@ -14,10 +13,29 @@ const StyledContainer = styled.div`
   border-radius: 10px;
 `;
 
+const StyledTable = styled.table`
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+`;
+
+const StyledTableHeader = styled.th`
+  border: 1px solid #4c4c4c;
+  padding: 8px;
+  text-align: left;
+`;
+
+const StyledTableCell = styled.td`
+  border: 1px solid #4c4c4c;
+  padding: 8px;
+  text-align: left;
+`;
+
 function Interpreter() {
   const [expression, setExpression] = useState("");
   const [result, setResult] = useState(null);
   const resultRef = useRef(null);
+  const [tokens, setTokens] = useState([]);
 
   const evaluateExpression = (expr) => {
     try {
@@ -39,6 +57,7 @@ function Interpreter() {
   const handleChange = (e) => {
     const newExpression = e.target.value;
     setExpression(newExpression);
+    setTokens(newExpression.split("")); // Tokenize the input
   };
 
   useEffect(() => {
@@ -54,6 +73,22 @@ function Interpreter() {
       <div className="title">NumberNoodle</div>
       <InputArea value={expression} onChange={handleChange} />
       <OutputArea result={result} ref={resultRef} />
+      <StyledTable>
+        <thead>
+          <tr>
+            <StyledTableHeader>Token</StyledTableHeader>
+            <StyledTableHeader>Index</StyledTableHeader>
+          </tr>
+        </thead>
+        <tbody>
+          {tokens.map((token, index) => (
+            <tr key={index}>
+              <StyledTableCell>{token}</StyledTableCell>
+              <StyledTableCell>{index}</StyledTableCell>
+            </tr>
+          ))}
+        </tbody>
+      </StyledTable>
     </StyledContainer>
   );
 }
