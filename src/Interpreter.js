@@ -59,14 +59,14 @@ function Interpreter() {
     for (let i = 0; i < input.length; i++) {
       const char = input[i];
       if (/\d/.test(char)) {
-        tokenList.push({ value: char, type: "num" });
+        tokenList.push({ value: char, type: "number" });
       } else if (/[+\-*/()]/.test(char)) {
         tokenList.push({ value: char, type: "operator" });
       } else if (/\s/.test(char)) {
         tokenList.push({value: char, type: "whitespace"})
       }
       else {
-        tokenList.push({ value: char, type: "id" });
+        tokenList.push({ value: char, type: "identifier" });
       }
     }
     return tokenList;
