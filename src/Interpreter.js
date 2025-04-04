@@ -6,7 +6,7 @@ import { gsap } from "gsap";
 import { evaluate } from "mathjs";
 
 const StyledContainer = styled.div`
-  max-width: 600px;i
+  max-width: 600px;
   margin: 50px auto;
   padding: 20px;
   border: 1px solid #4c4c4c;
