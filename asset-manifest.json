@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/NumberNoodle/static/css/main.15926b45.css",
-    "main.js": "/NumberNoodle/static/js/main.50f75072.js",
+    "main.js": "/NumberNoodle/static/js/main.eab671d7.js",
     "static/js/453.f11d88d9.chunk.js": "/NumberNoodle/static/js/453.f11d88d9.chunk.js",
     "index.html": "/NumberNoodle/index.html",
     "main.15926b45.css.map": "/NumberNoodle/static/css/main.15926b45.css.map",
-    "main.50f75072.js.map": "/NumberNoodle/static/js/main.50f75072.js.map",
+    "main.eab671d7.js.map": "/NumberNoodle/static/js/main.eab671d7.js.map",
     "453.f11d88d9.chunk.js.map": "/NumberNoodle/static/js/453.f11d88d9.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.15926b45.css",
-    "static/js/main.50f75072.js"
+    "static/js/main.eab671d7.js"
   ]
 }
